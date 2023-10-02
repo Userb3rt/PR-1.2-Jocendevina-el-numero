@@ -40,10 +40,10 @@
         app:layout_constraintTop_toBottomOf="@+id/numero_jugador" />
 
     <ScrollView
-        android:layout_width="97dp"
-        android:layout_height="107dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="168dp"
+        android:layout_width="226dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="192dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -57,6 +57,20 @@
             android:scrollIndicators="right"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:scrollbarAlwaysDrawVerticalTrack="true" />
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="146dp"
+        android:layout_height="106dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/ranking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

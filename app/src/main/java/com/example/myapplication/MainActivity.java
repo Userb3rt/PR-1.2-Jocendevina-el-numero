@@ -4,16 +4,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
     int numero_Aleatorio = (int)(Math.random()*100+1);
+    int numerodeintentos = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button_validar);
+        TextView historial = findViewById(R.id.textViewintents);
+        TextView ranking = findViewById(R.id.ranking);
+        String anteriorh = "";
+        ArrayList<Integer> rankinglist = new ArrayList<Integer>();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,23 +42,45 @@ public class MainActivity extends AppCompatActivity {
                 String Mensaje;
                 EditText et1;
                 et1 = (EditText)findViewById(R.id.numero_jugador);
-                TextView intentos_historial = findViewById(R.id.textViewintents);
+                String anteriorh = historial.getText().toString();
+                String rankingtext = "";
+
                 try {
                     String numero_escrito = et1.getText().toString();
                     int numero_escrito_int = Integer.parseInt(numero_escrito);
-
+                    et1.setText("");
                     if (numero_escrito_int > numero_Aleatorio){
                         Mensaje = "El numero introducido es mas grande que el Aleatorio.";
-                        intentos_historial.append(numero_escrito+"\n");
+                        historial.setText("Intento numero "+numerodeintentos+": "+numero_escrito+"\n"+anteriorh);
+                        numerodeintentos++;
+
                     }else if(numero_escrito_int < numero_Aleatorio){
                         Mensaje = "El numero introducido es mas pequeño que el Aleatorio.";
-                        intentos_historial.append(numero_escrito+"\n");
+                        historial.setText("Intento numero "+numerodeintentos+": "+numero_escrito+"\n"+anteriorh);
+                        numerodeintentos++;
                     }else {
                         Mensaje = "Has adivinado el Número!!!";
-                        numero_Aleatorio = (int)(Math.random()*100+1);
+                        //numero_Aleatorio = (int)(Math.random()*100+1);
+                        numero_Aleatorio = 2;
+                        historial.setText("");
+
+
+                        if (rankinglist.size() == 0){rankinglist.add(numerodeintentos);}
+                        else if (!rankinglist.contains(numerodeintentos)){
+                            rankinglist.add(numerodeintentos);
+                            Collections.sort(rankinglist);
+                        }
+                        for (int i = 0; i<rankinglist.size();i++){
+                            if (i == 0){
+                                rankingtext += "Best puntuación: "+ rankinglist.get(i)+"\n";
+                            }else{rankingtext += i+1+"º intento: "+rankinglist.get(i)+"\n";}
+                        }
+                        ranking.setText(rankingtext);
+                        numerodeintentos = 1;
+
                     }
                 }catch(Exception e){
-                    Mensaje = "Has de introducir un valor!";
+                    Mensaje = "Has de introducir un valor valido del 1 al 100!";
                 }
 
 
