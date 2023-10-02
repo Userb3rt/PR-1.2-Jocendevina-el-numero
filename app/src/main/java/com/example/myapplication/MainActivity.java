@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                while (numero_Aleatorio != 101){ //numero que no aparece en el rango, luego hare que el numero random sea 101 para poder cambiarlo.
-                    String Mensaje;
-                    EditText et1;
-                    et1 = (EditText)findViewById(R.id.numero_jugador);
+                String Mensaje;
+                EditText et1;
+                et1 = (EditText)findViewById(R.id.numero_jugador);
+                try {
                     String numero_escrito = et1.getText().toString();
                     int numero_escrito_int = Integer.parseInt(numero_escrito);
 
@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
                     }else {
                         Mensaje = "Has adivinado el Número!!!";
                         int numero_Aleatorio = (int)(Math.random()*100+1);
-                        break;
                     }
-                    Toast.makeText(MainActivity.this,Mensaje, Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Mensaje = "Has de introducir un valor!";
                 }
 
-
+                Toast.makeText(MainActivity.this,Mensaje, Toast.LENGTH_SHORT).show();
 
             }
         });
