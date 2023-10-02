@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,22 +28,25 @@ public class MainActivity extends AppCompatActivity {
                 String Mensaje;
                 EditText et1;
                 et1 = (EditText)findViewById(R.id.numero_jugador);
+                TextView intentos_historial = findViewById(R.id.textViewintents);
                 try {
                     String numero_escrito = et1.getText().toString();
                     int numero_escrito_int = Integer.parseInt(numero_escrito);
 
                     if (numero_escrito_int > numero_Aleatorio){
                         Mensaje = "El numero introducido es mas grande que el Aleatorio.";
+                        intentos_historial.append(numero_escrito+"\n");
                     }else if(numero_escrito_int < numero_Aleatorio){
                         Mensaje = "El numero introducido es mas pequeño que el Aleatorio.";
-
+                        intentos_historial.append(numero_escrito+"\n");
                     }else {
                         Mensaje = "Has adivinado el Número!!!";
-                        int numero_Aleatorio = (int)(Math.random()*100+1);
+                        numero_Aleatorio = (int)(Math.random()*100+1);
                     }
                 }catch(Exception e){
                     Mensaje = "Has de introducir un valor!";
                 }
+
 
                 Toast.makeText(MainActivity.this,Mensaje, Toast.LENGTH_SHORT).show();
 
