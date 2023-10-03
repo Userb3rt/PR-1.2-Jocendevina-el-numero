@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,11 +25,16 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-    int numero_Aleatorio = (int)(Math.random()*100+1);
+    //int numero_Aleatorio = (int)(Math.random()*100+1);
+    int numero_Aleatorio = 4;
     int numerodeintentos = 1;
+    ArrayList<Player> Records = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        AlertDialog.Builder builderinsertardatos = new AlertDialog.Builder(MainActivity.this);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -60,6 +68,37 @@ public class MainActivity extends AppCompatActivity {
                         numerodeintentos++;
                     }else {
                         Mensaje = "Has adivinado el Número!!!";
+                        builderinsertardatos.setTitle("¡ACERTASTE EL NÚMERO!");
+                        builderinsertardatos.setMessage("Quieres guardar tu record?\nEscribe tu usuario:");
+                        EditText et = new EditText(MainActivity.this);
+                        builderinsertardatos.setView(et);
+                        builderinsertardatos.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String nomplayer = et.getText().toString();
+                                int intentosnewplayer = numerodeintentos;
+                                int numero_alto = numero_Aleatorio;
+
+
+                            }
+                        });
+                        AlertDialog dialoginsertar = builderinsertardatos.create();
+                        dialoginsertar.show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         //numero_Aleatorio = (int)(Math.random()*100+1);
                         numero_Aleatorio = 2;
                         historial.setText("");
@@ -83,9 +122,17 @@ public class MainActivity extends AppCompatActivity {
                     Mensaje = "Has de introducir un valor valido del 1 al 100!";
                 }
 
-
                 Toast.makeText(MainActivity.this,Mensaje, Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        Button seeactivityranking = findViewById(R.id.seeactivityrecords);
+        seeactivityranking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MainActivity2.class);
+                startActivity(intent);
             }
         });
 
