@@ -8,9 +8,9 @@ import java.util.Date;
 public class Player {
     private String nom;
     private int intents, numeroadivinat;
-    private int temps;
+    private String temps;
 
-    public Player(String nom,int intents, int temps){
+    public Player(String nom,int intents, String temps){
         this.nom = nom;
         this.intents = intents;
         this.temps = temps;

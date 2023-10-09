@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,48 +46,55 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        Date fechainici = new Date();
-
-
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button_validar);
         TextView historial = findViewById(R.id.textViewintents);
         TextView ranking = findViewById(R.id.ranking);
         String anteriorh = "";
         ArrayList<Integer> rankinglist = new ArrayList<Integer>();
+        List<Date> listainici = new LinkedList<>();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String Mensaje;
-                EditText et1;
-                et1 = (EditText)findViewById(R.id.numero_jugador);
-                String anteriorh = historial.getText().toString();
-                String rankingtext = "";
 
                 try {
+                    listainici.add(new Date());
+
+                    EditText et1;
+                    et1 = (EditText) findViewById(R.id.numero_jugador);
+                    String anteriorh = historial.getText().toString();
+                    String rankingtext = "";
                     String numero_escrito = et1.getText().toString();
+
                     int numero_escrito_int = Integer.parseInt(numero_escrito);
                     et1.setText("");
-                    if (numero_escrito_int > numero_Aleatorio){
+                    if (numero_escrito_int > numero_Aleatorio) {
                         Mensaje = "El numero introducido es mas grande que el Aleatorio.";
-                        historial.setText("Intento numero "+numerodeintentos+": "+numero_escrito+"\n"+anteriorh);
+                        historial.setText("Intento numero " + numerodeintentos + ": " + numero_escrito + "\n" + anteriorh);
                         numerodeintentos++;
 
-                    }else if(numero_escrito_int < numero_Aleatorio){
+                    } else if (numero_escrito_int < numero_Aleatorio) {
                         Mensaje = "El numero introducido es mas pequeño que el Aleatorio.";
-                        historial.setText("Intento numero "+numerodeintentos+": "+numero_escrito+"\n"+anteriorh);
+                        historial.setText("Intento numero " + numerodeintentos + ": " + numero_escrito + "\n" + anteriorh);
                         numerodeintentos++;
-                    }else {
+                    } else {
                         //Calculamos el tiempo que ha tardado en conseguir el numero:
                         int minutostrans = 0;
                         int segundostrans = 0;
                         Date fechafinal = new Date();
-                        long tiempo_trancurrido = fechafinal.getTime()-fechainici.getTime();
+                        long tiempo_trancurrido = fechafinal.getTime() - listainici.get(0).getTime();
                         TimeUnit unidad = TimeUnit.SECONDS;
-                        long Segundos =unidad.convert(tiempo_trancurrido,TimeUnit.MILLISECONDS);
-                        if (Long.valueOf(Segundos).intValue()>=60){minutostrans = Long.valueOf(Segundos).intValue()/60;segundostrans = Long.valueOf(Segundos).intValue()%60;}
-                        Toast.makeText(MainActivity.this,minutostrans+"' "+segundostrans+"''", Toast.LENGTH_SHORT).show();
+                        long Segundos = unidad.convert(tiempo_trancurrido, TimeUnit.MILLISECONDS);
+                        if (Long.valueOf(Segundos).intValue() >= 60) {
+                            minutostrans = Long.valueOf(Segundos).intValue() / 60;
+                            segundostrans = Long.valueOf(Segundos).intValue() % 60;
+                        } else {
+                            segundostrans = Long.valueOf(Segundos).intValue();
+                        }
+                        String time = minutostrans + "' " + segundostrans + "''";
+                        Toast.makeText(MainActivity.this, time, Toast.LENGTH_SHORT).show();
+                        listainici.clear();
 
 
                         Mensaje = "Has adivinado el Número!!!";
@@ -99,20 +108,19 @@ public class MainActivity extends AppCompatActivity {
                                 String nomplayer = et.getText().toString();
                                 int intentosnewplayer = numerodeintentos;
                                 int numero_alto = numero_Aleatorio;
-
-                                Player player = new Player(nomplayer,intentosnewplayer,1);
-
+                                Player player = new Player(nomplayer, intentosnewplayer,time);
+                                Records.add(player);
+                            }
+                        });
+                        builderinsertardatos.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
                             }
                         });
                         AlertDialog dialoginsertar = builderinsertardatos.create();
                         dialoginsertar.show();
-
-
-
-
-
-
+                        numerodeintentos = 1;
 
 
                         //numero_Aleatorio = (int)(Math.random()*100+1);
@@ -120,28 +128,28 @@ public class MainActivity extends AppCompatActivity {
                         historial.setText("");
 
 
-
-
-
-                        if (rankinglist.size() == 0){rankinglist.add(numerodeintentos);}
-                        else if (!rankinglist.contains(numerodeintentos)){
+                        if (rankinglist.size() == 0) {
+                            rankinglist.add(numerodeintentos);
+                        } else if (!rankinglist.contains(numerodeintentos)) {
                             rankinglist.add(numerodeintentos);
                             Collections.sort(rankinglist);
                         }
-                        for (int i = 0; i<rankinglist.size();i++){
-                            if (i == 0){
-                                rankingtext += "Best puntuación: "+ rankinglist.get(i)+"\n";
-                            }else{rankingtext += i+1+"º intento: "+rankinglist.get(i)+"\n";}
+                        for (int i = 0; i < rankinglist.size(); i++) {
+                            if (i == 0) {
+                                rankingtext += "Best puntuación: " + rankinglist.get(i) + "\n";
+                            } else {
+                                rankingtext += i + 1 + "º intento: " + rankinglist.get(i) + "\n";
+                            }
                         }
                         ranking.setText(rankingtext);
                         numerodeintentos = 1;
 
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     Mensaje = "Has de introducir un valor valido del 1 al 100!";
                 }
 
-                Toast.makeText(MainActivity.this,Mensaje, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, Mensaje, Toast.LENGTH_SHORT).show();
 
             }
         });
