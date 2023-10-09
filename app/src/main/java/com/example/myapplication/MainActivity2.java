@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -15,6 +20,20 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        List<String>nom = new LinkedList<String>();
+        List<String>intents = new LinkedList<String>();
+        List<String>temps = new LinkedList<String>();
+
+        TableRow.LayoutParams  params1=new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1.0f);
+        TableRow.LayoutParams  params2=new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableLayout tbl=(TableLayout) findViewById(R.id.tablarecords);
+
+        
+
+
+
+
+
         Button volver = findViewById(R.id.volverjuego);
         volver.setOnClickListener(new View.OnClickListener() {
             @Override

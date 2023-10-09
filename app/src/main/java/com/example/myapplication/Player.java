@@ -9,4 +9,10 @@ public class Player {
     private String nom;
     private int intents, numeroadivinat;
     private int temps;
+
+    public Player(String nom,int intents, int temps){
+        this.nom = nom;
+        this.intents = intents;
+        this.temps = temps;
+    }
 }

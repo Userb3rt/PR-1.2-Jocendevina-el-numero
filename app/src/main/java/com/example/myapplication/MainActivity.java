@@ -19,10 +19,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     //int numero_Aleatorio = (int)(Math.random()*100+1);
@@ -37,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        Date fechainici = new Date();
+
+
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button_validar);
         TextView historial = findViewById(R.id.textViewintents);
@@ -67,6 +77,17 @@ public class MainActivity extends AppCompatActivity {
                         historial.setText("Intento numero "+numerodeintentos+": "+numero_escrito+"\n"+anteriorh);
                         numerodeintentos++;
                     }else {
+                        //Calculamos el tiempo que ha tardado en conseguir el numero:
+                        int minutostrans = 0;
+                        int segundostrans = 0;
+                        Date fechafinal = new Date();
+                        long tiempo_trancurrido = fechafinal.getTime()-fechainici.getTime();
+                        TimeUnit unidad = TimeUnit.SECONDS;
+                        long Segundos =unidad.convert(tiempo_trancurrido,TimeUnit.MILLISECONDS);
+                        if (Long.valueOf(Segundos).intValue()>=60){minutostrans = Long.valueOf(Segundos).intValue()/60;segundostrans = Long.valueOf(Segundos).intValue()%60;}
+                        Toast.makeText(MainActivity.this,minutostrans+"' "+segundostrans+"''", Toast.LENGTH_SHORT).show();
+
+
                         Mensaje = "Has adivinado el Número!!!";
                         builderinsertardatos.setTitle("¡ACERTASTE EL NÚMERO!");
                         builderinsertardatos.setMessage("Quieres guardar tu record?\nEscribe tu usuario:");
@@ -78,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                                 String nomplayer = et.getText().toString();
                                 int intentosnewplayer = numerodeintentos;
                                 int numero_alto = numero_Aleatorio;
+
+                                Player player = new Player(nomplayer,intentosnewplayer,1);
 
 
                             }
@@ -92,16 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
                         //numero_Aleatorio = (int)(Math.random()*100+1);
                         numero_Aleatorio = 2;
                         historial.setText("");
+
+
+
 
 
                         if (rankinglist.size() == 0){rankinglist.add(numerodeintentos);}
@@ -133,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,MainActivity2.class);
                 startActivity(intent);
+
             }
         });
 
